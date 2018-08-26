@@ -19,6 +19,25 @@ import java.util.concurrent.Executors;
  *  3. 在对象的创建过程中, this关键子没有泄漏给其他类: 防止其他类(如该类的内部匿名类)在对象创建过程中修改其状态.
  *  4. 任何字段如果引用了其他状态可变的对象(如集合,数组等), 则这些字段必须是private的, 并且不可以对外暴露,如果有
  *      相关方法需要这些字段, 应该进行防御性复制.
+ *
+ *
+ *  Immutable Object模式评价
+ *  使用场景:
+ *      1, 被建模对象变化不频繁
+ *      2, 同时对一组相关的数据继续写操作, 需要保证原子性, 但是如果是把相关的数据组合为一个不可变对象,就可以避免加锁
+ *      3, 使用某个对象作为安全的hashMap的key
+ *  注意点:
+ *      1,被建模对象状态变化频繁, 也不是不可以用这个模式, 要看对java内存性能消耗做一个评估
+ *      2, 有时候不可能真正意义上实现不可变对象, 但是向不可变对象靠拢也有利于发挥不可变对象好处
+ *      3, 如果不可变对象有一些数据需要对外暴露, 需要继续防御性复制
+ *
+ *  java标准库实例:
+ *      CopyOnWriteArrayList
+ *      之所以等效是因为CopyOnWriteArrayList的实例变量array是个数组,而数组的元素的值是可以替换的, 因此CopyOnWriteArrayList
+ *      的实例变量array并非严格意义上的Immutable Object
+ *      虽然CopyOnWriteArrayList的add方法为了保证复制实例变量引用的老数组的线程安全里面使用了锁,但是只要对
+ *      CopyOnWriteArrayList进行遍历的时候不加锁就已经达到了CopyOnWriteArrayList的设计目标(使其使用场景适用于遍历
+ *      比修改操作更加频繁的场景)
  */
 public class ImmutableObject {
 
