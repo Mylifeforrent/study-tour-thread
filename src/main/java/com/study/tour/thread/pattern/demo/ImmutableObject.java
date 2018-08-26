@@ -20,6 +20,15 @@ import java.util.concurrent.Executors;
  *  4. 任何字段如果引用了其他状态可变的对象(如集合,数组等), 则这些字段必须是private的, 并且不可以对外暴露,如果有
  *      相关方法需要这些字段, 应该进行防御性复制.
  *
+ *  Immutable Object模式简单构成
+ *  client:
+ *      客户端
+ *  ImmutableObject:
+ *      负责存储一组不可变状态,不暴露任何可以修改其状态的方法
+ *  Manipulator:
+ *      负责维护ImmutableObject所建模的现实世界实体状态的变更,当相应的实体状态发生变更的时候,该参与者负责
+ *      生成新的ImmutableObject对象的实例,以反应新的状态
+ *
  *
  *  Immutable Object模式评价
  *  使用场景:
